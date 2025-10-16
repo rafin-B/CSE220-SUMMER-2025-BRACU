@@ -1,0 +1,86 @@
+//L6 T4
+public static void swapChild( BTNode root, int lvl, int M ){
+       
+        if(root==null || lvl+1>M){
+            return;
+        }
+       BTNode temp=root.left;
+       root.left=root.right;
+       root.right=temp;
+       swapChild(root.left,lvl+1,M);
+       swapChild(root.right,lvl+1,M);
+    }
+
+//L6 T5
+public static Integer subtractSummation( BTNode root ){
+        if(root==null){
+            return 0;
+        }
+         return doSum(root.left)-doSum(root.right);
+    }
+    public static Integer doSum(BTNode root){
+      if(root==null){
+        return 0;
+      }
+      return ((Integer)root.elem)+doSum(root.left)+doSum(root.right);
+    }
+
+//L6 T6
+public static Integer levelSum( BTNode root ){
+        if(root==null)return 0;
+        int level=0;
+        return doCalc(root,level);
+    }
+    public static Integer doCalc(BTNode root,int lvl){
+        if(root==null) return 0;
+        if(lvl%2==0)return -(Integer)root.elem+doCalc(root.left,lvl+1)+doCalc(root.right,lvl+1);
+        else{
+            return (Integer)root.elem+doCalc(root.left,lvl+1)+doCalc(root.right,lvl+1);
+        }
+    }
+
+//L7 T4
+public static Integer rangeSum( BSTNode root, Integer low, Integer high ){
+         if(root==null)return 0;
+         if((root.elem)>=low && (root.elem)<=high){
+            return root.elem+rangeSum(root.left,low,high)+rangeSum(root.right,low,high);
+         }
+         return rangeSum(root.left,low,high)+rangeSum(root.right,low,high);
+    }
+
+//L7 T5
+public static Integer mirrorSum( BSTNode root ){
+        if(root==null)return 0;
+        return help(root.left,root.right);
+    }
+    private static Integer help(BSTNode left,BSTNode right){
+        if(left==null||right==null){
+           return 0;
+        }
+        return left.elem+right.elem
+        +help(left.left,right.right)+help(left.right,right.left);
+    }
+
+//L7 T6
+public static Boolean isBST( BSTNode root ){
+        if(root==null)return true;
+        if(root.left==null&&root.right==null){
+            return true;
+        }
+        if(root.right==null){
+                if(root.left.elem>root.elem)return false;
+                return isBST(root.left);
+            }
+        if(root.left==null){
+                if(root.right.elem<root.elem)return false;
+                return isBST(root.right);
+            }
+        if(root.left.elem>root.elem || root.right.elem<root.elem){
+            return false;
+        }
+        return isBST(root.left)&&isBST(root.right);
+    }
+
+
+
+

@@ -1,0 +1,399 @@
+//Edge Class
+
+public class Edge {
+
+    int source;
+    int destination;
+    int weight;
+    Edge next;
+
+    public Edge(int source, int destination, int weight, Edge next) {
+        this.source = source;
+        this.destination = destination;
+        this.weight = weight;
+        this.next = next;
+    }
+}
+
+//Task 02
+class AdjMatrix {
+
+    private int numV;
+    private int[][] adjMatrix;
+
+    public AdjMatrix(int numV) {
+        this.numV = numV;
+        adjMatrix = new int[numV][numV];
+    }
+
+    public void addEdges(int[][] edges) {
+        for (int i = 0; i < edges.length; i++) {
+            int u = edges[i][0];
+            int v = edges[i][1];
+            int weight = edges[i][2];
+            adjMatrix[u][v] = weight;
+            adjMatrix[v][u] = weight;
+        }
+    }
+
+    public int[][] getMatrix() {
+        return adjMatrix;
+    }
+}
+
+class AdjList {
+
+    private int numV;
+    private Edge[] adjList;
+
+    public AdjList(int numV) {
+        this.numV = numV;
+        adjList = new Edge[numV];
+    }
+
+    public void addEdges(int[][] edges) {
+        for (int i = 0; i < edges.length; i++) {
+            int source = edges[i][0];
+            int destination = edges[i][1];
+            int weight = edges[i][2];
+            addEdge(source, destination, weight);
+            addEdge(destination, source, weight);
+        }
+    }
+
+    private void addEdge(int source, int destination, int weight) {
+        Edge newEdge = new Edge(source, destination, weight, adjList[source]);
+        adjList[source] = newEdge;
+    }
+
+    public Edge[] getList() {
+        return adjList;
+    }
+}
+
+public class task2 {
+
+    public static void main(String[] args) {
+        int numVertices = 7;
+        int[][] edges = {{0, 6, 9}, {0, 3, 2}, {0, 1, 3},
+        {1, 2, 5}, {1, 5, 8},
+        {2, 0, 7}, {2, 3, 8},
+        {3, 4, 1}, {3, 1, 3},
+        {4, 0, 2}, {4, 2, 5}, {4, 6, 1},
+        {5, 4, 3}, {5, 6, 1}, {5, 2, 4},
+        {6, 1, 1}, {6, 2, 5}};
+        Task2a(numVertices, edges);
+        Task2b(numVertices, edges);
+    }
+
+    public static void Task2a(int num, int[][] edges) {
+        AdjMatrix a = new AdjMatrix(num);
+        a.addEdges(edges);
+        int maxV = -1;
+        int maxsum = Integer.MIN_VALUE;
+        for (int i = 0; i < num; i++) {
+            int sum = 0;
+            for (int j = 0; j < num; j++) {
+                sum += a.getMatrix()[i][j];
+            }
+            if (sum > maxsum) {
+                maxsum = sum;
+                maxV = i;
+            }
+        }
+        System.out.println("2a : Vertex " + maxV + " has the maximum sum of edges: " + maxsum);
+    }
+
+    public static void Task2b(int num, int[][] edges) {
+        AdjList b = new AdjList(num);
+        b.addEdges(edges);
+        int maxV = -1;
+        int maxsum = Integer.MIN_VALUE;
+        for (int i = 0; i < num; i++) {
+            int sum = 0;
+            Edge curr = b.getList()[i];
+            while (curr != null) {
+                sum += curr.weight;
+                curr = curr.next;
+            }
+            if (sum > maxsum) {
+                maxsum = sum;
+                maxV = i;
+            }
+        }
+        System.out.println("2b : Vertex " + maxV + " has the maximum sum of edges: " + maxsum);
+    }
+}
+
+//Task 03
+
+class AdjMatrix {
+
+    private int numV;
+    private int[][] adjMatrix;
+
+    public AdjMatrix(int numV) {
+        this.numV = numV;
+        adjMatrix = new int[numV][numV];
+    }
+
+    public void addEdges(int[][] edges) {
+        for (int i = 0; i < edges.length; i++) {
+            int u = edges[i][0];
+            int v = edges[i][1];
+            int weight = edges[i][2];
+            adjMatrix[u][v] = weight;
+        }
+    }
+
+    public int[][] getMatrix() {
+        return adjMatrix;
+    }
+}
+
+class AdjList {
+
+    private int numV;
+    private Edge[] adjList;
+
+    public AdjList(int numV) {
+        this.numV = numV;
+        adjList = new Edge[numV];
+    }
+
+    public void addEdges(int[][] edges) {
+        for (int i = 0; i < edges.length; i++) {
+            int source = edges[i][0];
+            int destination = edges[i][1];
+            int weight = edges[i][2];
+            addEdge(source, destination, weight);
+        }
+    }
+
+    private void addEdge(int source, int destination, int weight) {
+        Edge newEdge = new Edge(source, destination, weight, adjList[source]);
+        adjList[source] = newEdge;
+    }
+
+    public Edge[] getList() {
+        return adjList;
+    }
+}
+
+public class task3 {
+
+    public static void main(String[] args) {
+        int numVertices = 7;
+        int[][] edges = {{0, 6, 9}, {0, 3, 2}, {0, 1, 3},
+        {1, 2, 5}, {1, 5, 8},
+        {2, 0, 7}, {2, 3, 8},
+        {3, 4, 1}, {3, 1, 3},
+        {4, 0, 2}, {4, 2, 5}, {4, 6, 1}, {4, 1, 10},
+        {5, 4, 3}, {5, 6, 1}, {5, 2, 4},
+        {6, 1, 1}, {6, 2, 5}};
+        Task3a(numVertices, edges);
+        Task3b(numVertices, edges);
+    }
+
+    public static void Task3a(int num, int[][] edges) {
+        AdjMatrix a = new AdjMatrix(num);
+        a.addEdges(edges);
+        int maxV = -1;
+        int maxsum = Integer.MIN_VALUE;
+        for (int i = 0; i < num; i++) {
+            int sum = 0;
+            for (int j = 0; j < num; j++) {
+                sum += a.getMatrix()[i][j];
+            }
+            if (sum > maxsum) {
+                maxsum = sum;
+                maxV = i;
+            }
+        }
+        System.out.println("3a : Vertex " + maxV + " has the maximum sum of edges: " + maxsum);
+        System.out.println("3a : Maximum degree of the graph: " + maxDegreeMatrix(a, num));
+    }
+
+    public static int maxDegreeMatrix(AdjMatrix x, int num) {
+        int maxD = 0;
+        int[][] graph = x.getMatrix();
+        for (int i = 0; i < num; i++) {
+            int deg = 0;
+            for (int j = 0; j < num; j++) {
+                if (graph[i][j] != 0) {
+                    deg++;
+                }
+            }
+            if (deg > maxD) {
+                maxD = deg;
+            }
+        }
+        return maxD;
+    }
+
+    public static void Task3b(int num, int[][] edges) {
+        AdjList b = new AdjList(num);
+        b.addEdges(edges);
+        int maxV = -1;
+        int maxsum = Integer.MIN_VALUE;
+        for (int i = 0; i < num; i++) {
+            int sum = 0;
+            Edge curr = b.getList()[i];
+            while (curr != null) {
+                sum += curr.weight;
+                curr = curr.next;
+            }
+            if (sum > maxsum) {
+                maxsum = sum;
+                maxV = i;
+            }
+        }
+        System.out.println("3b : Vertex " + maxV + " has the maximum sum of edges: " + maxsum);
+        System.out.println("3b : Maximum degree of the graph: " + maxDegreeList(b, num));
+    }
+
+    public static int maxDegreeList(AdjList x, int num) {
+        int maxD = 0;
+        Edge[] graph = x.getList();
+        for (int i = 0; i < num; i++) {
+            int deg = 0;
+            Edge curr = graph[i];
+            while (curr != null) {
+                deg++;
+                curr = curr.next;
+            }
+            if (deg > maxD) {
+                maxD = deg;
+            }
+        }
+        return maxD;
+    }
+}
+
+//Task04
+
+class AdjMatrix {
+
+    private int numV;
+    private int[][] adjMatrix;
+
+    public AdjMatrix(int numV) {
+        this.numV = numV;
+        adjMatrix = new int[numV][numV];
+    }
+
+    public void addEdges(int[][] edges) {
+        for (int i = 0; i < edges.length; i++) {
+            int u = edges[i][0];
+            int v = edges[i][1];
+            int weight = edges[i][2];
+            adjMatrix[u][v] = weight;
+        }
+    }
+
+    public int[][] getMatrix() {
+        return adjMatrix;
+    }
+
+    public void makeUndirected() {
+        for (int i = 0; i < numV; i++) {
+            for (int j = 0; j < numV; j++) {
+                if (adjMatrix[i][j] != 0) {
+                    adjMatrix[j][i] = adjMatrix[i][j];
+                }
+            }
+        }
+    }
+}
+
+class AdjList {
+
+    private int numV;
+    private Edge[] adjList;
+
+    public AdjList(int numV) {
+        this.numV = numV;
+        adjList = new Edge[numV];
+    }
+
+    public void addEdges(int[][] edges) {
+        for (int i = 0; i < edges.length; i++) {
+            int source = edges[i][0];
+            int destination = edges[i][1];
+            int weight = edges[i][2];
+            addEdge(source, destination, weight);
+        }
+    }
+
+    private void addEdge(int source, int destination, int weight) {
+        Edge newEdge = new Edge(source, destination, weight, adjList[source]);
+        adjList[source] = newEdge;
+    }
+
+    public Edge[] getList() {
+        return adjList;
+    }
+
+    public void makeUndirected() {
+        Edge[] original = new Edge[numV];
+        for (int i = 0; i < numV; i++) {
+            original[i] = adjList[i];
+        }
+        for (int i = 0; i < numV; i++) {
+            Edge curr = original[i];
+            while (curr != null) {
+                addEdge(curr.destination, i, curr.weight);
+                curr = curr.next;
+            }
+        }
+    }
+
+    public class task4 {
+
+        public static void main(String[] args) {
+            int numVertices = 7;
+            int[][] edges = {{0, 6, 9}, {0, 3, 2}, {0, 1, 3},
+            {1, 2, 5}, {1, 5, 8},
+            {2, 0, 7}, {2, 3, 8},
+            {3, 4, 1}, {3, 1, 3},
+            {4, 0, 2}, {4, 2, 5}, {4, 6, 1}, {4, 1, 10},
+            {5, 4, 3}, {5, 6, 1}, {5, 2, 4},
+            {6, 1, 1}, {6, 2, 5}};
+            Task4a(numVertices, edges);
+            Task4b(numVertices, edges);
+        }
+
+        public static void Task4a(int num, int[][] edges) {
+            AdjMatrix a = new AdjMatrix(num);
+            a.addEdges(edges);
+            a.makeUndirected();
+            System.out.println("Undirected adjacency matrix :");
+            int[][] mat = a.getMatrix();
+            for (int i = 0; i < num; i++) {
+                for (int j = 0; j < num; j++) {
+                    System.out.print(mat[i][j] + " ");
+                }
+                System.out.println();
+            }
+        }
+
+        public static void Task4b(int num, int[][] edges) {
+            AdjList b = new AdjList(num);
+            b.addEdges(edges);
+            b.makeUndirected();
+            System.out.println("Undirected Adjacency list :");
+            Edge[] list = b.getList();
+            for (int i = 0; i < num; i++) {
+                System.out.print(i + " --> ");
+                Edge curr = list[i];
+                while (curr != null) {
+                    System.out.print("(" + curr.destination + ", " + curr.weight + ") ");
+                    curr = curr.next;
+                }
+                System.out.println();
+            }
+        }
+    }
+}
+
+

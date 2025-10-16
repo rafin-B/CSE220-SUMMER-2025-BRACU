@@ -1,0 +1,106 @@
+//Task 4
+
+ public static void playGame(Integer[][] arena) {
+        int rows = arena.length;
+        int cols = arena[0].length;
+        int points = 0;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (arena[i][j] % 50 == 0 && arena[i][j] != 0) {
+                    if (i != rows - 1 && arena[i + 1][j] == 2) {
+                        points += 2;
+                    }
+                    if (i != 0 && arena[i - 1][j] == 2) {
+                        points += 2;
+                    }
+                    if (j != cols - 1 && arena[i][j + 1] == 2) {
+                        points += 2;
+                    }
+                    if (j != 0 && arena[i][j - 1] == 2) {
+                        points += 2;
+                    }
+                }
+            }
+        }
+        if (points >= 10) {
+            System.out.println("Points gained: " + points + ". Your team has survived the game.");
+        } else {
+            System.out.println("Points gained: " + points + ". Your team is out.");
+        }
+
+    }
+
+//Task 3
+
+ public static Integer[][] compressMatrix( Integer[][] matrix ){
+        int rows=matrix.length;
+        int cols=matrix[0].length;
+        Integer [][]comp=new Integer[rows/2][cols/2];
+        int rowC=0;
+        for(int i=0;i<rows;i+=2){
+            int colC=0;
+            for(int j=0;j<cols;j+=2){
+              comp[rowC][colC++]=matrix[i][j]+matrix[i+1][j]+matrix[i][j+1]+matrix[i+1][j+1];
+            }
+            rowC++;
+        }
+        return comp;
+    }
+
+//Task 1
+public static void mostWater(Integer[] height) {
+        int left = 0;
+        int right = height.length - 1;
+        int contMax = 0;
+        while (left < right) {
+            int cont = (right - left) * Math.min(height[left], height[right]);
+            contMax = Math.max(cont, contMax);
+            if (height[left] < height[right]) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+        System.out.println(contMax);
+    }
+
+//Task 2
+ public static Integer rowRotation(Integer examWeek, String[][] matrix) {
+        int up = 0;
+        int down = matrix.length - 1;
+        int step = (examWeek - 1) % matrix.length;
+        while (up < down) {
+            String[] temp = matrix[up];
+            matrix[up] = matrix[down];
+            matrix[down] = temp;
+            up++;
+            down--;
+        }
+        up = 0;
+        down = step - 1;
+        while (up < down) {
+            String[] temp = matrix[up];
+            matrix[up] = matrix[down];
+            matrix[down] = temp;
+            up++;
+            down--;
+        }
+        up = step;
+        down = matrix.length - 1;
+        while (up < down) {
+            String[] temp = matrix[up];
+            matrix[up] = matrix[down];
+            matrix[down] = temp;
+            up++;
+            down--;
+        }
+        Arr.print2D(matrix);
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (matrix[i][j].equals("AA")) {
+                    return i + 1;
+                }
+            }
+        }
+        return -1;
+    }
